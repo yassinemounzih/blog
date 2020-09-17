@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
 use App\Http\Controllers\CategoryController;
+use GuzzleHttp\Middleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,4 +56,14 @@ Route::get('/post',function(){
 
 // Admin panel 
 
-Route::get('/ys' , [CategoryController::class ,'test']);
+Route::group(['prefix'=>'admin','Middleware'=>['auth']],function(){
+
+    Route::get('/dashboard', function(){
+
+        return view('admin.dashboard.index');
+    });
+
+     Route::resource('category' , CategoryController::class);
+
+});
+
