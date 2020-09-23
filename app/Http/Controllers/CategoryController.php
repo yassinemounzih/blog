@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -13,8 +16,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::orderBy('created_at', 'DESC')->paginate(20);
+        return view('admin.category.index', compact('categories'));
+
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -23,7 +29,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin/category/create');
     }
 
     /**
@@ -34,7 +40,32 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|unique:categories,name',
+        ]);
+
+        
+        $category = Category::create([
+            'name' => $request->name,
+            'slug' => Str::slug($request->name, '-'),
+            
+            
+            'description' => $request->description,
+        ]);
+
+
+
+        // $data =$request->only('name','description');
+        // $data['slug']=Str::slug($data['name'],'-');
+    
+        // $category=Category::create($data);
+
+        
+        $request->session()->flash('success', 'Category created successfully');
+
+        // Session::flash('success', 'Category created successfully');
+        
+        return redirect()->back();
     }
 
     /**
@@ -52,11 +83,12 @@ class CategoryController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
+     * @param \App\Category $category
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        //
+        return view('admin.category.edit',compact('category'));
     }
 
     /**
@@ -66,19 +98,35 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $this->validate($request, [
+            'name' => "required|unique:categories,name,$category->name",
+        ]);
+
+        $category->name = $request->name;
+        $category->slug = Str::slug($request->name, '-');
+        $category->description = $request->description;
+        $category->save();
+
+        $request->session()->flash('success', 'Category Upadeteds successfully');
+        return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
-     *
+     * @param  \App\Category  $category
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, Category $category)
     {
-        //
+        if($category){
+            $category->delete();
+            
+            $request->session()->flash('success', 'Category deleted successfully');
+            return redirect()->route('category.index');
+
+        }
     }
 }

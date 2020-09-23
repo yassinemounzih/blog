@@ -16,6 +16,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{asset('admin')}}/plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('admin')}}/css/adminlte.min.css">
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -168,8 +173,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link active">
+          <li class="nav-item">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Starter Pages
@@ -200,6 +205,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </p>
             </a>
           </li>
+
+          <li class="nav-item mt-auto">
+            <a href="{{ route('category.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-tags"></i>
+              <p>
+                Categories
+              </p>
+            </a>                    
+          </li>
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -207,7 +222,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- /.sidebar -->
   </aside>
 
-@yield('content')
+  <div class="content-wrapper">
+    @yield('content')
+  </div>
 
   <!-- Main Footer -->
   <footer class="main-footer">
@@ -229,5 +246,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{asset('admin')}}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('admin')}}/js/adminlte.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+  @if(Session::has('success'))
+  toastr.success("{{ Session::get('success') }}");
+  @endif
+
+</script>
+
 </body>
 </html>
