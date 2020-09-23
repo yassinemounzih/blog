@@ -215,6 +215,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>                    
           </li>
 
+          <li class="nav-item mt-auto">
+            <a href="{{ route('tag.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-tag"></i>
+              <p>
+                tag
+              </p>
+            </a>                    
+          </li>
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

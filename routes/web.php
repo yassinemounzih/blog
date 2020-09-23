@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TagController;
+
 use GuzzleHttp\Middleware;
 
 /*
@@ -68,6 +70,7 @@ Route::group(['prefix'=>'admin','Middleware'=>['auth']],function(){
     });
 
      Route::resource('category' , CategoryController::class);
+     Route::resource('tag',TagController::class);
 
 });
 
