@@ -84,7 +84,7 @@
 
                     <td colspan="5"> 
 
-                        <h5 class="text-center"> No Tags Found .</h5>
+                        <h5 class="text-center"> No Tags Found Tags.</h5>
 
                     </td>
 
