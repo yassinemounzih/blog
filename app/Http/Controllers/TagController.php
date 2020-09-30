@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class TagController extends Controller
 {
@@ -26,7 +27,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin/tag/create');
     }
 
     /**
@@ -37,7 +38,24 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|unique:categories,name',
+        ]);
+
+        
+        $tag = Tag::create([
+            'name' => $request->name,
+            'slug' => Str::slug($request->name, '-'),
+            
+            
+            'description' => $request->description,
+        ]);
+
+        $request->session()->flash('success', 'Tag created successfully');
+
+        // Session::flash('success', 'Category created successfully');
+        
+        return redirect()->back();
     }
 
     /**
@@ -59,7 +77,7 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        //
+        return view('admin.tag.edit',compact('tag'));
     }
 
     /**
@@ -71,7 +89,17 @@ class TagController extends Controller
      */
     public function update(Request $request, Tag $tag)
     {
-        //
+        $this->validate($request, [
+            'name' => "required|unique:categories,name,$tag->name",
+        ]);
+
+        $tag->name = $request->name;
+        $tag->slug = Str::slug($request->name, '-');
+        $tag->description = $request->description;
+        $tag->save();
+
+        $request->session()->flash('success', 'tag Upadeteds successfully');
+        return redirect()->back();
     }
 
     /**
@@ -80,8 +108,14 @@ class TagController extends Controller
      * @param  \App\Models\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tag $tag)
+    public function destroy(Request $request,Tag $tag)
     {
-        //
+        if($tag){
+            $tag->delete();
+
+            $request->session()->flash('success', 'Category deleted successfully');
+        }
+
+        return redirect()->back();
     }
 }

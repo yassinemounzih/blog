@@ -20,6 +20,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
+  @yield('style')
 
 </head>
 <body class="hold-transition sidebar-mini">
@@ -224,6 +225,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>                    
           </li>
 
+          
+          <li class="nav-item mt-auto">
+            <a href="{{ route('post.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-tag"></i>
+              <p>
+                Post
+              </p>
+            </a>                    
+          </li>
+
+
+          <li class="nav-item mt-auto">
+            <a href="{{ route('logout') }}"  class="nav-link">
+              <i class="nav-icon fas fa-sign-out-alt"></i>
+              <p>
+                Logout
+              </p>
+            </a>
+          </li>
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -246,7 +267,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
   </footer>
 </div>
 <!-- ./wrapper -->
-
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+  @csrf
+</form>
 <!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->
@@ -257,6 +280,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{asset('admin')}}/js/adminlte.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+@yield('script')
 
 <script>
   @if(Session::has('success'))
